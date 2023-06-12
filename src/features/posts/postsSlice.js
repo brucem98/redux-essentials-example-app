@@ -1,4 +1,6 @@
-import { createSlice, nanoid } from "@reduxjs/toolkit" 
+import { createSlice, nanoid, createAsyncThunk } from "@reduxjs/toolkit" 
+import { client } from '../../api/client'
+
 import { sub } from 'date-fns'
 
 const initialState = {
@@ -6,6 +8,11 @@ const initialState = {
     status: 'idle',
     error: null
 }
+
+export const fetchPosts = createAsyncThunk('posts/fetchPosts', async () => {
+    const response = await client.get('/fakeApi/posts')
+    return response.data
+  })
 
 const postsSlice = createSlice({
     name: 'posts',
@@ -30,7 +37,7 @@ const postsSlice = createSlice({
         },
         postUpdated(state, action) {
             const { id, title, content } = action.payload
-            const existingPost = state.posts.find(post => post.id = id)
+            const existingPost = state.posts.find(post => post.id === id)
             if (existingPost) {
                 existingPost.title = title
                 existingPost.content = content
