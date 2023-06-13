@@ -13,7 +13,7 @@ const initialState = {
 export const fetchPosts = createAsyncThunk('posts/fetchPosts', async () => {
     const response = await client.get('/fakeApi/posts')
     return response.data
-  })
+})
 
 const postsSlice = createSlice({
     name: 'posts',
